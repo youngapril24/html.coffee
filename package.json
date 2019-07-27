@@ -1,14 +1,32 @@
 {
   "name": "html.coffee",
   "version": "0.0.1",
+  "private": true,
   "description": "HTML 기초 학습",
   "main": "index.js",
   "dependencies": {
-    "webpack": "^4.38.0",
-    "webpack-cli": "^3.3.6"
+    "monaco": "^1.201704190613.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@fortawesome/fontawesome-free": "^5.9.0",
+    "bulma": "^0.7.5",
+    "css-loader": "^3.1.0",
+    "elm-live": "^3.4.1",
+    "html-webpack-plugin": "^3.2.0",
+    "sass-loader": "^7.1.0",
+    "source-map-loader": "^0.2.4",
+    "style-loader": "^0.23.1",
+    "ts-lint": "^4.5.1",
+    "ts-loader": "^6.0.4",
+    "typescript": "^3.5.3",
+    "url-loader": "^2.1.0",
+    "webpack": "^4.38.0",
+    "webpack-cli": "^3.3.6",
+    "webpack-dev-server": "^3.7.2"
+  },
   "scripts": {
+    "build": "webpack",
+    "live": "elm-live src/Main.elm -d dist --pushstate --start-page=index.html --debug -- --output=dist/elm.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
