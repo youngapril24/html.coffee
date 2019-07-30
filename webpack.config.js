@@ -9,11 +9,16 @@ module.exports = {
 
     resolve: {
         // Add '.ts' and '.tsx' as resolvable extensions.
-        extensions: [".ts", ".tsx"]
+        extensions: [".ts", ".tsx", ".js"]
     },
 
     entry: {
-        app: './src/index.ts'
+        "app": './src/index.ts',
+        "editor.worker": 'monaco-editor/esm/vs/editor/editor.worker',
+        "json.worker": 'monaco-editor/esm/vs/language/json/json.worker',
+        "css.worker": 'monaco-editor/esm/vs/language/css/css.worker',
+        "html.worker": 'monaco-editor/esm/vs/language/html/html.worker',
+        "ts.worker": 'monaco-editor/esm/vs/language/typescript/ts.worker'
     },
 
     plugins: [new HtmlWebpackPlugin()],
@@ -38,6 +43,7 @@ module.exports = {
             {
                 enforce: "pre",
                 test: /\.js$/,
+                exclude: /node_modules/,
                 loader: "source-map-loader"
             },
             {
