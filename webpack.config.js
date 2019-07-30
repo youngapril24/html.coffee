@@ -21,7 +21,7 @@ module.exports = {
         "ts.worker": 'monaco-editor/esm/vs/language/typescript/ts.worker'
     },
 
-    plugins: [new HtmlWebpackPlugin()],
+    plugins: [new HtmlWebpackPlugin({template: "src/index.html"})],
 
     output: {
         filename: '[name].bundle.js',
