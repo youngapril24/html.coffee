@@ -28,3 +28,5 @@ monaco.editor.create(document.getElementById('container'), {
 	].join('\n'),
 	language: 'javascript'
 });
+
+const app = Elm.Main.init({node: document.getElementById("app"), flags: ""});
