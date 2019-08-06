@@ -48,13 +48,8 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                use: [
-                    {
-                        loader: "css-loader"
-                    }
-                ]
+                use: ['style-loader', 'css-loader']
             }
-
         ]
     }
 };
