@@ -64,7 +64,10 @@ parser =
         , Parser.map GoogleOAuth (s "oauth" </> s "google" <?> Query.string "code")
         ]
 
-type alias Cred = String
+
+type alias Cred =
+    String
+
 
 type Session
     = LoggedIn Nav.Key ScreenState Cred
@@ -125,7 +128,6 @@ update msg model =
 
         ToggleNavMenu ->
             ( { model | session = toggleSessionMenuOpen model.session }, Cmd.none )
-
 
 
 toggleSessionMenuOpen : Session -> Session
@@ -309,6 +311,7 @@ homeView model =
         [ li [] [ a [ href Home ] [ text "소개" ] ]
         , li [] [ a [ href Login ] [ text "로그인" ] ]
         ]
+    , node "code-editor" [ style "height" "500px", style "width" "100%" ] []
     ]
 
 
@@ -320,6 +323,8 @@ notFoundView =
 loginView : Model -> Html Msg
 loginView model =
     section [ class "로그인" ] []
+
+
 
 -- SUBSCRIPTIONS
 
