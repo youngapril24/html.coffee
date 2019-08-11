@@ -26,25 +26,34 @@ declare var Elm: any;
 
 customElements.define('code-editor', class MonacoEditorElement extends HTMLElement {
     _editor: monaco.editor.IStandaloneCodeEditor
+    _editorValue: string
 
     constructor() {
         super();
     }
 
+    set editorValue(v: string) {
+        this._editorValue = v;
+    }
+
+    get editorValue() {
+        return this._editorValue;
+    }
+
     connectedCallback() {
         this._editor = monaco.editor.create(this, {
-            value: [
-                '<h1>안녕하세요</h1>',
-                '<div>HTML 기초반에 오신 것을 <em>환영합니다.</em></div>',
-                '<ul>',
-                '  <li>HTML로 하는 일</li>',
-                '  <li>HTML 언어 기초</li>',
-                '</ul>'
-            ].join('\n'),
+            value: this.editorValue,
             language: 'html',
-
+            fontLigatures: true,
+            fontSize: 14,
+            renderLineHighlight: "none",
             minimap: { enabled: false },
             matchBrackets: false,
+        });
+        this._editor.onDidChangeModelContent(e => {
+            console.log(this._editor.getValue());
+            this._editorValue = this._editor.getValue();
+            this.dispatchEvent(new CustomEvent("editorChanged"));
         });
     }
 });

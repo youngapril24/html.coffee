@@ -25,7 +25,7 @@
   },
   "scripts": {
     "build": "webpack",
-    "live": "elm-live src/Main.elm -d dist --pushstate --start-page=index.html --debug -- --output=dist/elm.js",
+    "live": "elm-live src/Main.elm -d dist --pushstate --start-page=index.html -- --output=dist/elm.js --debug",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

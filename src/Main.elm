@@ -4,11 +4,11 @@ import Browser
 import Browser.Navigation as Nav
 import Html exposing (..)
 import Html.Attributes as Attr exposing (..)
-import Html.Events exposing (onClick)
+import Html.Events exposing (on, onClick)
 import Html.Keyed as Keyed
 import Html.Lazy exposing (lazy)
 import Http
-import Json.Decode as Decode exposing (Decoder, Value, decodeString, field, string)
+import Json.Decode as D exposing (Decoder, Value, decodeString, field, string)
 import Json.Encode as E
 import List exposing (filter, map, sortBy)
 import Url
@@ -36,12 +36,13 @@ main =
 type alias Model =
     { route : Route
     , session : Session
+    , code : String
     }
 
 
 init : Maybe String -> Url.Url -> Nav.Key -> ( Model, Cmd Msg )
 init flags url key =
-    ( Model (urlToRoute url) (Guest key { navMenuOpen = False })
+    ( Model (urlToRoute url) (Guest key { navMenuOpen = False }) "<h1>테스트</h1>"
     , Cmd.none
     )
 
@@ -107,6 +108,7 @@ type Msg
     | UrlChanged Url.Url
     | GotUserInfo (Result Http.Error String)
     | ToggleNavMenu
+    | CodeChanged String
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -128,6 +130,9 @@ update msg model =
 
         ToggleNavMenu ->
             ( { model | session = toggleSessionMenuOpen model.session }, Cmd.none )
+
+        CodeChanged code ->
+            ( { model | code = code }, Cmd.none )
 
 
 toggleSessionMenuOpen : Session -> Session
@@ -259,7 +264,7 @@ menuView { route, session } =
     nav [ class "navbar" ]
         [ div [ class "navbar-brand" ]
             [ a [ class "navbar-item", href Home ]
-                [ text "Thankyou.coffee" ]
+                [ text "HTML.coffee" ]
             , div
                 [ attribute "role" "button"
                 , attribute "aria-label" "menu"
@@ -305,13 +310,26 @@ footerView model =
         ]
 
 
+editor : List (Attribute Msg) -> Html Msg
+editor attributes =
+    node "code-editor" attributes []
+
+
 homeView : Model -> List (Html Msg)
 homeView model =
     [ ul []
         [ li [] [ a [ href Home ] [ text "소개" ] ]
         , li [] [ a [ href Login ] [ text "로그인" ] ]
         ]
-    , node "code-editor" [ style "height" "500px", style "width" "100%" ] []
+    , editor
+        [ style "height" "500px"
+        , style "width" "100%"
+        , property "editorValue" (E.string "<h1>테스트</h1>")
+        , on "editorChanged" <|
+            D.map CodeChanged <|
+                D.at [ "target", "editorValue" ] <|
+                    D.string
+        ]
     ]
 
 
