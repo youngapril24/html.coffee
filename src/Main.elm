@@ -108,7 +108,7 @@ type Msg
     | UrlChanged Url.Url
     | GotUserInfo (Result Http.Error String)
     | ToggleNavMenu
-    | CodeChanged String
+    | CodeChanged String String
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -131,7 +131,7 @@ update msg model =
         ToggleNavMenu ->
             ( { model | session = toggleSessionMenuOpen model.session }, Cmd.none )
 
-        CodeChanged code ->
+        CodeChanged editorId code ->
             ( { model | code = code }, Cmd.none )
 
 
@@ -310,9 +310,35 @@ footerView model =
         ]
 
 
-editor : List (Attribute Msg) -> Html Msg
-editor attributes =
-    node "code-editor" attributes []
+type EditorAttribute
+    = EditorLanguage String
+    | EditorValue String
+
+
+editor : String -> List (Attribute Msg) -> List EditorAttribute -> Html Msg
+editor editorId htmlAttributes editorAttributes =
+    let
+        etoh : EditorAttribute -> Attribute Msg
+        etoh =
+            \ea ->
+                case ea of
+                    EditorValue val ->
+                        property "editorValue" <| E.string val
+
+                    EditorLanguage lang ->
+                        property "language" <| E.string lang
+    in
+    node "code-editor"
+        (htmlAttributes
+            ++ List.map etoh editorAttributes
+            ++ [ attribute "id" editorId
+               , on "editorChanged" <|
+                    D.map2 CodeChanged
+                        (D.at [ "target", "id" ] <| D.string)
+                        (D.at [ "target", "editorValue" ] <| D.string)
+               ]
+        )
+        []
 
 
 homeView : Model -> List (Html Msg)
@@ -321,15 +347,13 @@ homeView model =
         [ li [] [ a [ href Home ] [ text "소개" ] ]
         , li [] [ a [ href Login ] [ text "로그인" ] ]
         ]
-    , editor
-        [ style "height" "500px"
+    , editor "editor-1"
+        [ style "height" "300px"
         , style "width" "100%"
-        , property "editorValue" (E.string "<h1>테스트</h1>")
-        , on "editorChanged" <|
-            D.map CodeChanged <|
-                D.at [ "target", "editorValue" ] <|
-                    D.string
         ]
+        [ EditorValue "<h1>테스트</h1>"
+        ]
+    , div [] [ text model.code ]
     ]
 
 

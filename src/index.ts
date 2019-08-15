@@ -27,23 +27,32 @@ declare var Elm: any;
 customElements.define('code-editor', class MonacoEditorElement extends HTMLElement {
     _editor: monaco.editor.IStandaloneCodeEditor
     _editorValue: string
+    _editorLanguage: string
 
     constructor() {
         super();
+    }
+
+    get editorValue() {
+        return this._editorValue || "";
     }
 
     set editorValue(v: string) {
         this._editorValue = v;
     }
 
-    get editorValue() {
-        return this._editorValue;
+    get language() {
+        return this._editorLanguage || 'html';
+    }
+
+    set language(l: string) {
+        this._editorLanguage = l;
     }
 
     connectedCallback() {
         this._editor = monaco.editor.create(this, {
             value: this.editorValue,
-            language: 'html',
+            language: this.language,
             fontLigatures: true,
             fontSize: 14,
             renderLineHighlight: "none",
@@ -51,7 +60,6 @@ customElements.define('code-editor', class MonacoEditorElement extends HTMLEleme
             matchBrackets: false,
         });
         this._editor.onDidChangeModelContent(e => {
-            console.log(this._editor.getValue());
             this._editorValue = this._editor.getValue();
             this.dispatchEvent(new CustomEvent("editorChanged"));
         });
