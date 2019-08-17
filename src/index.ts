@@ -60,7 +60,7 @@ customElements.define('code-editor', class MonacoEditorElement extends HTMLEleme
             matchBrackets: false,
         });
         this._editor.onDidChangeModelContent(e => {
-            this._editorValue = this._editor.getValue();
+            this.editorValue = this._editor.getValue();
             this.dispatchEvent(new CustomEvent("editorChanged"));
         });
     }
