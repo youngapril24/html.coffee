@@ -1,0 +1,42 @@
+<link href="hello.css" rel="stylesheets">
+<header>
+  <h1>웹페이지 제작 스터디</h1>
+</header>
+<main>
+  <section>
+    <h1><em>나만의</em> 웹사이트를 만들자.</h1>
+    <p>이게 내 첫 <mark>웹페이지</mark>입니다.</p>
+    <p>
+      이미지를 보여볼게요.
+      <br>
+      <img src="unsplash.jpg" width="300">
+    </p>
+  </section>
+  <section>
+    <h2>최근 관심사</h2>
+    <ol>
+      <li>함수형 프로그래밍</li>
+      <!-- <li>오프로드 바이크</li>
+      <li>자동차 서킷주행</li> -->
+    </ol>
+  </section>
+  <section>
+    <button id="버튼">버튼</button>
+    <div id="표시">0</div>
+    <script>
+        var 횟수 = 0;
+        const 버튼 = document.getElementById('버튼');
+        const 표시 = document.getElementById('표시');
+        버튼.onclick = function (e) {
+            표시.innerText = ++횟수;
+        };
+    </script>
+  </section>
+  <section>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/fehV52dFMo0" frameborder="0"
+        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  </section>
+</main>
+<footer>
+  <p>2019년 김대현 제작</p>
+</footer>
